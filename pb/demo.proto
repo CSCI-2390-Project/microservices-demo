@@ -14,6 +14,8 @@
 
 syntax = "proto3";
 
+//option go_package = ".;hipstershop";
+
 package hipstershop;
 
 // -----------------Cart service-----------------
@@ -224,7 +226,6 @@ service CheckoutService {
 }
 
 message PlaceOrderRequest {
-    option protected_attributes = 'email;credit_card';
     string user_id = 1;
     string user_currency = 2;
 
