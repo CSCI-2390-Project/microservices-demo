@@ -18,6 +18,7 @@ import (
 	"context"
 	"time"
 
+	privacy_go "github.com/CSCI-2390-Project/privacy-go"
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 
 	"github.com/pkg/errors"
@@ -108,6 +109,7 @@ func (fe *frontendServer) getRecommendations(ctx context.Context, userID string,
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to get recommended product info (#%s)", v)
 		}
+		privacy_go.PermissionedRecursiveDecrypt(p)
 		out[i] = p
 	}
 	if len(out) > 4 {
