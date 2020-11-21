@@ -262,6 +262,7 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		}
 
 		multPrice := money.MultiplySlow(*price, uint32(item.GetQuantity()))
+		privacy_go.PermissionedRecursiveDecrypt(p)
 		items[i] = cartItemView{
 			Item:     p,
 			Quantity: item.GetQuantity(),
