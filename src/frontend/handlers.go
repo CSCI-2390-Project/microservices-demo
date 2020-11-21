@@ -345,14 +345,15 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
 	}
-
+	order_results := order.GetOrder()
+	privacy_go.PermissionedRecursiveDecrypt(order_results)
 	if err := templates.ExecuteTemplate(w, "order", map[string]interface{}{
 		"session_id":      sessionID(r),
 		"request_id":      r.Context().Value(ctxKeyRequestID{}),
 		"user_currency":   currentCurrency(r),
 		"show_currency":   false,
 		"currencies":      currencies,
-		"order":           order.GetOrder(),
+		"order":           order_results,
 		"total_paid":      &totalPaid,
 		"recommendations": recommendations,
 		"platform_css":    plat.css,
@@ -403,7 +404,9 @@ func (fe *frontendServer) chooseAd(ctx context.Context, ctxKeys []string, log lo
 		log.WithField("error", err).Warn("failed to retrieve ads")
 		return nil
 	}
-	return ads[rand.Intn(len(ads))]
+	AdChosen := ads[rand.Intn(len(ads))]
+	privacy_go.PermissionedRecursiveDecrypt(AdChosen)
+	return AdChosen
 }
 
 func renderHTTPError(log logrus.FieldLogger, r *http.Request, w http.ResponseWriter, err error, code int) {
