@@ -276,7 +276,7 @@ func (p *productCatalog) GetProduct(ctx context.Context, req *pb.GetProductReque
 	time.Sleep(extraLatency)
 	var found *pb.Product
 	for i := 0; i < len(parseCatalog()); i++ {
-		if req.GetId() == parseCatalog()[i].Id {
+		if req.GetId() == parseCatalog()[i].GetId() {
 			found = parseCatalog()[i]
 		}
 	}
