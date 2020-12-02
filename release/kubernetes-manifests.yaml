@@ -32,14 +32,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/emailservice:v0.2.0
+        image: jweissko/emailservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 8080
         env:
         - name: PORT
           value: "8080"
-        # - name: DISABLE_TRACING
-        #   value: "1"
+        - name: DISABLE_TRACING
+          value: "1"
         - name: DISABLE_PROFILER
           value: "1"
         readinessProbe:
@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.2.0
+          image: jweissko/checkoutservice:v0.1.4-59-g1c285fc
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -112,10 +112,10 @@ spec:
             value: "cartservice:7070"
           # - name: DISABLE_STATS
           #   value: "1"
-          # - name: DISABLE_TRACING
-          #   value: "1"
-          # - name: DISABLE_PROFILER
-          #   value: "1"
+          - name: DISABLE_TRACING
+            value: "1"
+          - name: DISABLE_PROFILER
+            value: "1"
           # - name: JAEGER_SERVICE_ADDR
           #   value: "jaeger-collector:14268"
           resources:
@@ -155,7 +155,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.2.0
+        image: jweissko/recommendationservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -171,10 +171,10 @@ spec:
           value: "8080"
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           value: "productcatalogservice:3550"
-        # - name: DISABLE_TRACING
-        #   value: "1"
-        # - name: DISABLE_PROFILER
-        #   value: "1"
+        - name: DISABLE_TRACING
+          value: "1"
+        - name: DISABLE_PROFILER
+          value: "1"
         # - name: DISABLE_DEBUGGER
         #   value: "1"
         resources:
@@ -215,7 +215,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: gcr.io/google-samples/microservices-demo/frontend:v0.2.0
+          image: jweissko/frontend:v0.1.4-59-g1c285fc
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -253,10 +253,10 @@ spec:
             value: "adservice:9555"
           - name: ENV_PLATFORM
             value: "gcp"
-          # - name: DISABLE_TRACING
-          #   value: "1"
-          # - name: DISABLE_PROFILER
-          #   value: "1"
+          - name: DISABLE_TRACING
+            value: "1"
+          - name: DISABLE_PROFILER
+            value: "1"
           # - name: JAEGER_SERVICE_ADDR
           #   value: "jaeger-collector:14268"
           resources:
@@ -309,7 +309,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.2.0
+        image: jweissko/paymentservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 50051
         env:
@@ -358,7 +358,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.2.0
+        image: jweissko/productcatalogservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 3550
         env:
@@ -366,10 +366,10 @@ spec:
           value: "3550"
         # - name: DISABLE_STATS
         #   value: "1"
-        # - name: DISABLE_TRACING
-        #   value: "1"
-        # - name: DISABLE_PROFILER
-        #   value: "1"
+        - name: DISABLE_TRACING
+          value: "1"
+        - name: DISABLE_PROFILER
+          value: "1"
         # - name: JAEGER_SERVICE_ADDR
         #   value: "jaeger-collector:14268"
         readinessProbe:
@@ -415,7 +415,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/cartservice:v0.2.0
+        image: jweissko/cartservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 7070
         env:
@@ -455,39 +455,39 @@ spec:
     port: 7070
     targetPort: 7070
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: loadgenerator
-spec:
-  selector:
-    matchLabels:
-      app: loadgenerator
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: loadgenerator
-      annotations:
-        sidecar.istio.io/rewriteAppHTTPProbers: "true"
-    spec:
-      terminationGracePeriodSeconds: 5
-      restartPolicy: Always
-      containers:
-      - name: main
-        image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.2.0
-        env:
-        - name: FRONTEND_ADDR
-          value: "frontend:80"
-        - name: USERS
-          value: "10"
-        resources:
-          requests:
-            cpu: 300m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: loadgenerator
+# spec:
+#   selector:
+#     matchLabels:
+#       app: loadgenerator
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: loadgenerator
+#       annotations:
+#         sidecar.istio.io/rewriteAppHTTPProbers: "true"
+#     spec:
+#       terminationGracePeriodSeconds: 5
+#       restartPolicy: Always
+#       containers:
+#       - name: main
+#         image: jweissko/loadgenerator:v0.1.4-59-g1c285fc
+#         env:
+#         - name: FRONTEND_ADDR
+#           value: "frontend:80"
+#         - name: USERS
+#           value: "10"
+#         resources:
+#           requests:
+#             cpu: 300m
+#             memory: 256Mi
+#           limits:
+#             cpu: 500m
+#             memory: 512Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -505,17 +505,17 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/currencyservice:v0.2.0
+        image: jweissko/currencyservice:v0.1.4-59-g1c285fc
         ports:
         - name: grpc
           containerPort: 7000
         env:
         - name: PORT
           value: "7000"
-        # - name: DISABLE_TRACING
-        #   value: "1"
-        # - name: DISABLE_PROFILER
-        #   value: "1"
+        - name: DISABLE_TRACING
+          value: "1"
+        - name: DISABLE_PROFILER
+          value: "1"
         # - name: DISABLE_DEBUGGER
         #   value: "1"
         readinessProbe:
@@ -560,7 +560,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: gcr.io/google-samples/microservices-demo/shippingservice:v0.2.0
+        image: jweissko/shippingservice:v0.1.4-59-g1c285fc
         ports:
         - containerPort: 50051
         env:
@@ -568,10 +568,10 @@ spec:
           value: "50051"
         # - name: DISABLE_STATS
         #   value: "1"
-        # - name: DISABLE_TRACING
-        #   value: "1"
-        # - name: DISABLE_PROFILER
-        #   value: "1"
+        - name: DISABLE_TRACING
+          value: "1"
+        - name: DISABLE_PROFILER
+          value: "1"
         # - name: JAEGER_SERVICE_ADDR
         #   value: "jaeger-collector:14268"
         readinessProbe:
