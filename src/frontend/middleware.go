@@ -16,6 +16,7 @@ package main
 
 import (
 	"context"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -86,8 +87,14 @@ func ensureSessionID(next http.Handler) http.HandlerFunc {
 		var sessionID string
 		c, err := r.Cookie(cookieSessionID)
 		if err == http.ErrNoCookie {
-			u, _ := uuid.NewRandom()
-			sessionID = u.String()
+			//u, _ := uuid.NewRandom()
+			//sessionID = u.String()
+			// the above is the old code
+			// we set user ids as one of alice,bob and carol
+			rand.Seed(time.Now().Unix())
+			UserIds := []string{"alice", "bob", "carol"}
+			n := rand.Int() % len(UserIds)
+			sessionID = UserIds[n]
 			http.SetCookie(w, &http.Cookie{
 				Name:   cookieSessionID,
 				Value:  sessionID,
