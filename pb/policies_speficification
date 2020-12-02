@@ -1,0 +1,30 @@
+##CartService:
+
+The cart should not be sending to recommending service and ad service.
+
+###Related functions: _CartService_GetCart_Handler
+
+CartItem AddItemRequest GetCartRequest Cart 
+
+##ProductCatalog Service:
+The product response should not be sent to recommendation and ad service.
+### Related functions Getproduct:SearchProducts SearchProductsResponse
+
+## Shipping service:
+
+The shipping address should only be available to checkout service, email service, shipping address
+
+message GetQuoteRequest GetQuoteResponse ShipOrderRequest ShipOrderResponse restricted to shipping service
+
+
+## CheckoutSevice
+
+order placed be restricted to checkoutservice only 
+PlaceOrderRequest 
+
+## PaymentSevice
+
+ChargeRequest contains credit card info. only to paymentservice
+
+## EmailService
+send out order confirmation. restrict to only emailservice 
