@@ -20,7 +20,7 @@
           "Copying": [
             {
               "allowed": true,
-              "if": "PlaceOrderRequest.CreditCard()< chargeCard"
+              "if": "PlaceOrderRequest.CreditCard< chargeCard"
             }
           ],
           "Printing": []
