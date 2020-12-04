@@ -7,7 +7,7 @@
           "Copying": [
             {
               "allowed": true,
-              "if": "PlaceOrderRequest.GetID< main.prepareOrderItemsAndShippingQuoteFromCart"
+              "if": "PlaceOrderRequest.GetID< PlaceOrder.prepareOrderItemsAndShippingQuoteFromCart"
             }
           ],
           "Printing": []
@@ -20,7 +20,7 @@
           "Copying": [
             {
               "allowed": true,
-              "if": "PlaceOrderRequest.CreditCard< chargeCard"
+              "if": "PlaceOrderRequest.CreditCard< PlaceOrder.chargeCard"
             }
           ],
           "Printing": []
@@ -33,7 +33,7 @@
           "Copying": [
             {
               "allowed": true,
-              "if": "PlaceOrderRequest.GetAddress< main.prepareOrderItemsAndShippingQuoteFromCart"
+              "if": "PlaceOrderRequest.GetAddress< PlaceOrder.main."
             }
           ],
           "Printing": []
