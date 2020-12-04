@@ -60,6 +60,7 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve products"), http.StatusInternalServerError)
 		return
 	}
+	// the userid should be sessionid. I do not add userid to ctx due to that we do not require policy checking for getcart// by yingjie
 	cart, err := fe.getCart(r.Context(), sessionID(r))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve cart"), http.StatusInternalServerError)
@@ -139,7 +140,7 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
 	}
-
+	//the userid should be sessionid. I do not add userid to ctx due to that we do not require policy checking for getcart// by yingjie
 	cart, err := fe.getCart(r.Context(), sessionID(r))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve cart"), http.StatusInternalServerError)
@@ -151,7 +152,7 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to convert currency"), http.StatusInternalServerError)
 		return
 	}
-
+	//the userid should be sessionid. I do not add userid to ctx due to that we do not require policy checking for getRecommendations// by yingjie
 	recommendations, err := fe.getRecommendations(r.Context(), sessionID(r), []string{id})
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get product recommendations"), http.StatusInternalServerError)
@@ -195,7 +196,7 @@ func (fe *frontendServer) addToCartHandler(w http.ResponseWriter, r *http.Reques
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve product"), http.StatusInternalServerError)
 		return
 	}
-
+	//the userid should be sessionid. I do not add userid to ctx due to that we do not require policy checking for insertCart// by yingjie
 	if err := fe.insertCart(r.Context(), sessionID(r), p.GetId(), int32(quantity)); err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to add to cart"), http.StatusInternalServerError)
 		return
@@ -207,7 +208,7 @@ func (fe *frontendServer) addToCartHandler(w http.ResponseWriter, r *http.Reques
 func (fe *frontendServer) emptyCartHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
 	log.Debug("emptying cart")
-
+	//the userid should be sessionid. I do not add userid to ctx due to that we do not require policy checking for emptyCart// by yingjie
 	if err := fe.emptyCart(r.Context(), sessionID(r)); err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to empty cart"), http.StatusInternalServerError)
 		return
@@ -224,19 +225,30 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
 	}
+	// do not have policies so no metadata is added
 	cart, err := fe.getCart(r.Context(), sessionID(r))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve cart"), http.StatusInternalServerError)
 		return
 	}
 	log.Printf("cart:%+v", cart)
+	// do not have policies so no metadata is added
 	recommendations, err := fe.getRecommendations(r.Context(), sessionID(r), cartIDs(cart))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get product recommendations"), http.StatusInternalServerError)
 		return
 	}
-
-	shippingCost, err := fe.getShippingQuote(r.Context(), cart, currentCurrency(r))
+	// we want to hide shippingcost, thus we add metadata before getShippingQuote
+	ctx := r.Context()
+	userid := sessionID(r)
+	groupid,err := IsUserInGroup(userid)
+	if err!=nil{
+		ctx := metadata.AppendToOutgoingContext(ctx, "groupid", groupid)
+	}
+	else{
+		status.Errorf(codes.Internal, "failed to find the group id for userid: %+v", userid)
+	}
+	shippingCost, err := fe.getShippingQuote(ctx), cart, currentCurrency(r))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get shipping quote"), http.StatusInternalServerError)
 		return
@@ -307,9 +319,20 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		ccYear, _     = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
 		ccCVV, _      = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
 	)
-
+	// placeorder needs to access email,creditcard,..,  the request is allowed by fault
+	// however, in case email,creditcard are sent to other functions which are called by placeorder, we add metadata
+	ctx := r.Context()
+	userid := sessionID(r)
+	groupid,err := IsUserInGroup(userid)
+	if err!=nil{
+		ctx := metadata.AppendToOutgoingContext(ctx, "groupid", groupid)
+	}
+	else{
+		status.Errorf(codes.Internal, "failed to find the group id for userid: %+v", userid)
+	}
+	
 	order, err := pb.NewCheckoutServiceClient(fe.checkoutSvcConn).
-		PlaceOrder(r.Context(), &pb.PlaceOrderRequest{
+		PlaceOrder(ctx, &pb.PlaceOrderRequest{
 			Email: email,
 			CreditCard: &pb.CreditCardInfo{
 				CreditCardNumber:          ccNumber,
@@ -332,6 +355,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	log.WithField("order", order.GetOrder().GetOrderId()).Info("order placed")
 
 	order.GetOrder().GetItems()
+	// no policies, no metadata
 	recommendations, _ := fe.getRecommendations(r.Context(), sessionID(r), nil)
 
 	totalPaid := *order.GetOrder().GetShippingCost()

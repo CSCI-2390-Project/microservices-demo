@@ -1,0 +1,58 @@
+{
+    "Policies": [
+      {
+        "Message": "PlaceOrderRequest",
+        "Field": "UserId",
+        "Conditions": {
+          "Copying": [
+            {
+              "allowed": true,
+              "if": "PlaceOrderRequest.GetID< main.prepareOrderItemsAndShippingQuoteFromCart"
+            }
+          ],
+          "Printing": []
+        }
+      },
+      {
+        "Message": "PlaceOrderRequest",
+        "Field": "CreditCard",
+        "Conditions": {
+          "Copying": [
+            {
+              "allowed": true,
+              "if": "PlaceOrderRequest.CreditCard()< chargeCard"
+            }
+          ],
+          "Printing": []
+        }
+      },
+      {
+        "Message": "PlaceOrderRequest",
+        "Field": "Address",
+        "Conditions": {
+          "Copying": [
+            {
+              "allowed": true,
+              "if": "PlaceOrderRequest.GetAddress< main.prepareOrderItemsAndShippingQuoteFromCart"
+            }
+          ],
+          "Printing": []
+        }
+      }
+    ],
+    "RequestValidation": [
+      {
+        "MethodName": "PlaceOrder",
+        "MatchingContext": {
+          "groupid": ["permissionedgroup"]
+        }
+      },
+      {
+        "MethodName": "getShippingQuote",
+        "MatchingContext": {
+          "groupid": ["permissionedgroup"]
+        }
+      }
+      
+    ]
+  }
