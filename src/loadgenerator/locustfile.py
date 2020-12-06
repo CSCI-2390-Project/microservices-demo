@@ -19,14 +19,8 @@ from locust import HttpUser, TaskSet, between
 
 products = [
     '0PUK6V6EV0',
-    '1YMWWN1N4O',
-    '2ZYFJ3GM2N',
-    '66VCHSJNUP',
-    '6E92ZMYYFZ',
-    '9SIQT8TOJO',
-    'L9ECAV7KIM',
-    'LS4PSXUNUM',
-    'OLJCESPC7Z']
+    'L9ECAV7KIM'
+]
 
 def index(l):
     l.client.get("/")
@@ -70,12 +64,12 @@ class UserBehavior(TaskSet):
         index(self)
 
     tasks = {index: 1,
-        setCurrency: 2,
-        browseProduct: 10,
-        addToCart: 2,
-        viewCart: 3,
+        setCurrency: 1,
+        browseProduct: 1,
+        addToCart: 1,
+        viewCart: 1,
         checkout: 1}
 
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
-    wait_time = between(1, 10)
+    wait_time = between(1, 2)

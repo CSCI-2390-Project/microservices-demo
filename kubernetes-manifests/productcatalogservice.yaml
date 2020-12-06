@@ -28,7 +28,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: productcatalogservice
+        image: akshatm/productcatalogservice
         ports:
         - containerPort: 3550
         env:
@@ -38,8 +38,6 @@ spec:
           value: "/src/privacy_policy.json"
         - name: DISABLE_STATS
           value: "1"
-        # - name: DISABLE_TRACING
-        #   value: "1"
         - name: DISABLE_PROFILER
           value: "1"
         - name: JAEGER_SERVICE_ADDR

@@ -20,30 +20,30 @@ build:
   # must provide a "default repo" using one of the methods described 
   # here:
   # https://skaffold.dev/docs/concepts/#image-repository-handling
-  - image: emailservice
+  - image: akshatm/emailservice
     context: src/emailservice
-  - image: productcatalogservice
+  - image: akshatm/productcatalogservice
     context: src/productcatalogservice
-  - image: recommendationservice
+  - image: akshatm/recommendationservice
     context: src/recommendationservice
-  - image: shippingservice
+  - image: akshatm/shippingservice
     context: src/shippingservice
-  - image: checkoutservice
+  - image: akshatm/checkoutservice
     context: src/checkoutservice
-  - image: paymentservice
+  - image: akshatm/paymentservice
     context: src/paymentservice
-  - image: currencyservice
+  - image: akshatm/currencyservice
     context: src/currencyservice
-  - image: cartservice
+  - image: akshatm/cartservice
     context: src/cartservice
-  - image: frontend
+  - image: akshatm/frontend
     context: src/frontend
-  - image: loadgenerator
+  - image: akshatm/loadgenerator
     context: src/loadgenerator
-  - image: adservice
+  - image: akshatm/adservice
     context: src/adservice
   local: 
-    push: false
+    push: true
   tagPolicy:
     gitCommit: {}
 deploy:

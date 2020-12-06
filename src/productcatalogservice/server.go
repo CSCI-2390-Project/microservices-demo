@@ -206,7 +206,6 @@ func initStackdriverTracing() {
 
 func initTracing() {
 	initJaegerTracing()
-	initStackdriverTracing()
 }
 
 func initProfiling(service, version string) {

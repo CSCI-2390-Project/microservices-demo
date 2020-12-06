@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: frontend
+          image: akshatm/frontend
           ports:
           - containerPort: 8080
           env:
@@ -53,8 +53,6 @@ spec:
             value: "adservice:9555"
           - name: ENV_PLATFORM
             value: "gcp"
-          #- name: DISABLE_TRACING
-          #  value: "1"
           - name: DISABLE_PROFILER
             value: "1"
           - name: JAEGER_SERVICE_ADDR

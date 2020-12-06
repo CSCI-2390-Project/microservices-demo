@@ -28,18 +28,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: paymentservice
+        image: akshatm/paymentservice
         ports:
         - containerPort: 50051
         env:
         - name: PORT
           value: "50051"
-        #readinessProbe:
-          #exec:
-            #command: ["/bin/grpc_health_probe", "-addr=:50051"]
-        #livenessProbe:
-          #exec:
-            #command: ["/bin/grpc_health_probe", "-addr=:50051"]
+        - name: JAEGER_SERVICE_ADDR
+          value: "jaeger-collector:14268"
         resources:
           requests:
             cpu: 100m

@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: shippingservice
+        image: akshatm/shippingservice
         ports:
         - containerPort: 50051
         env:
@@ -35,12 +35,12 @@ spec:
           value: "50051"
         - name: DISABLE_STATS
           value: "1"
-        # - name: DISABLE_TRACING
-        #   value: "1"
         - name: DISABLE_PROFILER
           value: "1"
         - name: JAEGER_SERVICE_ADDR
           value: "jaeger-collector:14268"
+        - name: GRPC_PRIVACY_POLICY_LOCATION
+          value: "/src/privacy_policy.json"
         resources:
           requests:
             cpu: 100m
