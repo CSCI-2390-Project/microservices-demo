@@ -18,7 +18,6 @@ import (
 	"context"
 	"time"
 
-	privacy_go "github.com/CSCI-2390-Project/privacy-go"
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 
 	"github.com/pkg/errors"
@@ -35,7 +34,7 @@ func (fe *frontendServer) getCurrencies(ctx context.Context) ([]string, error) {
 		return nil, err
 	}
 	var out []string
-	for _, c := range currs.GetCurrencyCodes() {
+	for _, c := range currs.CurrencyCodes {
 		if _, ok := whitelistedCurrencies[c]; ok {
 			out = append(out, c)
 		}
@@ -109,9 +108,6 @@ func (fe *frontendServer) getRecommendations(ctx context.Context, userID string,
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to get recommended product info (#%s)", v)
 		}
-		// needed because getProduct returns `p` as encrypted, and we pass this directly to
-		// a json templates handler which cannot understand our encrypted logic.
-		privacy_go.PermissionedRecursiveDecrypt(p)
 		out[i] = p
 	}
 	if len(out) > 4 {

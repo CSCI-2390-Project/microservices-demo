@@ -122,8 +122,8 @@ func (s *server) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQ
 
 	// 1. Our quote system requires the total number of items to be shipped.
 	count := 0
-	for _, item := range in.GetItems() {
-		count += int(item.GetQuantity())
+	for _, item := range in.Items {
+		count += int(item.Quantity)
 	}
 
 	// 2. Generate a quote based on the total number of items to be shipped.
@@ -145,7 +145,7 @@ func (s *server) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.Sh
 	log.Info("[ShipOrder] received request")
 	defer log.Info("[ShipOrder] completed request")
 	// 1. Create a Tracking ID
-	baseAddress := fmt.Sprintf("%s, %s, %s", in.GetAddress().GetStreetAddress(), in.GetAddress().GetCity(), in.GetAddress().GetState())
+	baseAddress := fmt.Sprintf("%s, %s, %s", in.Address.StreetAddress, in.Address.City, in.Address.State)
 	id := CreateTrackingId(baseAddress)
 
 	// 2. Generate a response.

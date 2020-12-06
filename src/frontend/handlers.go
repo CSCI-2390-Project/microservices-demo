@@ -29,7 +29,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	privacy_go "github.com/CSCI-2390-Project/privacy-go"
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 	"github.com/GoogleCloudPlatform/microservices-demo/src/frontend/money"
 )
@@ -77,7 +76,6 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 			renderHTTPError(log, r, w, errors.Wrapf(err, "failed to do currency conversion for product %s", p.GetId()), http.StatusInternalServerError)
 			return
 		}
-		privacy_go.PermissionedRecursiveDecrypt(p)
 		ps[i] = productView{p, price}
 	}
 
@@ -157,8 +155,7 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get product recommendations"), http.StatusInternalServerError)
 		return
 	}
-	// needed because `product` is passed directly to the populated values here.
-	privacy_go.PermissionedRecursiveDecrypt(p)
+
 	product := struct {
 		Item  *pb.Product
 		Price *pb.Money
@@ -167,7 +164,7 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 	if err := templates.ExecuteTemplate(w, "product", map[string]interface{}{
 		"session_id":      sessionID(r),
 		"request_id":      r.Context().Value(ctxKeyRequestID{}),
-		"ad":              fe.chooseAd(r.Context(), p.GetCategories(), log),
+		"ad":              fe.chooseAd(r.Context(), p.Categories, log),
 		"user_currency":   currentCurrency(r),
 		"show_currency":   true,
 		"currencies":      currencies,
@@ -230,7 +227,7 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve cart"), http.StatusInternalServerError)
 		return
 	}
-	log.Printf("cart:%+v", cart)
+
 	recommendations, err := fe.getRecommendations(r.Context(), sessionID(r), cartIDs(cart))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get product recommendations"), http.StatusInternalServerError)
@@ -263,7 +260,6 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		}
 
 		multPrice := money.MultiplySlow(*price, uint32(item.GetQuantity()))
-		privacy_go.PermissionedRecursiveDecrypt(p)
 		items[i] = cartItemView{
 			Item:     p,
 			Quantity: item.GetQuantity(),
@@ -346,15 +342,14 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve currencies"), http.StatusInternalServerError)
 		return
 	}
-	order_results := order.GetOrder()
-	privacy_go.PermissionedRecursiveDecrypt(order_results)
+
 	if err := templates.ExecuteTemplate(w, "order", map[string]interface{}{
 		"session_id":      sessionID(r),
 		"request_id":      r.Context().Value(ctxKeyRequestID{}),
 		"user_currency":   currentCurrency(r),
 		"show_currency":   false,
 		"currencies":      currencies,
-		"order":           order_results,
+		"order":           order.GetOrder(),
 		"total_paid":      &totalPaid,
 		"recommendations": recommendations,
 		"platform_css":    plat.css,
@@ -405,9 +400,7 @@ func (fe *frontendServer) chooseAd(ctx context.Context, ctxKeys []string, log lo
 		log.WithField("error", err).Warn("failed to retrieve ads")
 		return nil
 	}
-	AdChosen := ads[rand.Intn(len(ads))]
-	privacy_go.PermissionedRecursiveDecrypt(AdChosen)
-	return AdChosen
+	return ads[rand.Intn(len(ads))]
 }
 
 func renderHTTPError(log logrus.FieldLogger, r *http.Request, w http.ResponseWriter, err error, code int) {
