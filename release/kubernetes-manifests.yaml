@@ -32,7 +32,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/emailservice:v0.1.4-59-g1c285fc
+        image: emailservice
         ports:
         - containerPort: 8080
         env:
@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: jweissko/checkoutservice:v0.1.4-59-g1c285fc
+          image: checkoutservice
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -155,7 +155,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/recommendationservice:v0.1.4-59-g1c285fc
+        image: recommendationservice
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -215,7 +215,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: jweissko/frontend:v0.1.4-59-g1c285fc
+          image: frontend
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -237,6 +237,8 @@ spec:
           env:
           - name: PORT
             value: "8080"
+          - name: GRPC_PRIVACY_POLICY_LOCATION
+            value: "/src/privacy_policy.json"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
             value: "productcatalogservice:3550"
           - name: CURRENCY_SERVICE_ADDR
@@ -309,7 +311,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/paymentservice:v0.1.4-59-g1c285fc
+        image: paymentservice
         ports:
         - containerPort: 50051
         env:
@@ -358,7 +360,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/productcatalogservice:v0.1.4-59-g1c285fc
+        image: productcatalogservice
         ports:
         - containerPort: 3550
         env:
@@ -415,7 +417,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/cartservice:v0.1.4-59-g1c285fc
+        image: cartservice
         ports:
         - containerPort: 7070
         env:
@@ -475,7 +477,7 @@ spec:
 #       restartPolicy: Always
 #       containers:
 #       - name: main
-#         image: jweissko/loadgenerator:v0.1.4-59-g1c285fc
+#         image: loadgenerator
 #         env:
 #         - name: FRONTEND_ADDR
 #           value: "frontend:80"
@@ -505,7 +507,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jweissko/currencyservice:v0.1.4-59-g1c285fc
+        image: currencyservice
         ports:
         - name: grpc
           containerPort: 7000
@@ -560,7 +562,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: jweissko/shippingservice:v0.1.4-59-g1c285fc
+        image: shippingservice
         ports:
         - containerPort: 50051
         env:

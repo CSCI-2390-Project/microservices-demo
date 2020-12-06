@@ -95,6 +95,15 @@ func (x *CartItem) GetQuantity() int32 {
 	return 0
 }
 
+func (x *CartItem) SetProductId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("CartItem", "ProductId", value)
+	if err != nil {
+		return err
+	}
+	x.ProductId = value
+	return nil
+}
+
 type AddItemRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -152,6 +161,15 @@ func (x *AddItemRequest) GetItem() *CartItem {
 	return nil
 }
 
+func (x *AddItemRequest) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("AddItemRequest", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
+	return nil
+}
+
 type EmptyCartRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -201,6 +219,15 @@ func (x *EmptyCartRequest) GetUserId() string {
 	return ""
 }
 
+func (x *EmptyCartRequest) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("EmptyCartRequest", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
+	return nil
+}
+
 type GetCartRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -248,6 +275,15 @@ func (x *GetCartRequest) GetUserId() string {
 		return privacy_go.PermissionedDecrypt("GetCartRequest", "UserId", x.UserId)
 	}
 	return ""
+}
+
+func (x *GetCartRequest) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("GetCartRequest", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
+	return nil
 }
 
 type Cart struct {
@@ -304,6 +340,15 @@ func (x *Cart) GetItems() []*CartItem {
 	if x != nil {
 		return x.Items
 	}
+	return nil
+}
+
+func (x *Cart) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Cart", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
 	return nil
 }
 
@@ -405,6 +450,15 @@ func (x *ListRecommendationsRequest) GetProductIds() []string {
 		}
 		return y
 	}
+	return nil
+}
+
+func (x *ListRecommendationsRequest) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("ListRecommendationsRequest", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
 	return nil
 }
 
@@ -556,6 +610,42 @@ func (x *Product) GetCategories() []string {
 	return nil
 }
 
+func (x *Product) SetId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Product", "Id", value)
+	if err != nil {
+		return err
+	}
+	x.Id = value
+	return nil
+}
+
+func (x *Product) SetName(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Product", "Name", value)
+	if err != nil {
+		return err
+	}
+	x.Name = value
+	return nil
+}
+
+func (x *Product) SetDescription(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Product", "Description", value)
+	if err != nil {
+		return err
+	}
+	x.Description = value
+	return nil
+}
+
+func (x *Product) SetPicture(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Product", "Picture", value)
+	if err != nil {
+		return err
+	}
+	x.Picture = value
+	return nil
+}
+
 type ListProductsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -654,6 +744,15 @@ func (x *GetProductRequest) GetId() string {
 	return ""
 }
 
+func (x *GetProductRequest) SetId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("GetProductRequest", "Id", value)
+	if err != nil {
+		return err
+	}
+	x.Id = value
+	return nil
+}
+
 type SearchProductsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -701,6 +800,15 @@ func (x *SearchProductsRequest) GetQuery() string {
 		return privacy_go.PermissionedDecrypt("SearchProductsRequest", "Query", x.Query)
 	}
 	return ""
+}
+
+func (x *SearchProductsRequest) SetQuery(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("SearchProductsRequest", "Query", value)
+	if err != nil {
+		return err
+	}
+	x.Query = value
+	return nil
 }
 
 type SearchProductsResponse struct {
@@ -964,6 +1072,15 @@ func (x *ShipOrderResponse) GetTrackingId() string {
 	return ""
 }
 
+func (x *ShipOrderResponse) SetTrackingId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("ShipOrderResponse", "TrackingId", value)
+	if err != nil {
+		return err
+	}
+	x.TrackingId = value
+	return nil
+}
+
 type Address struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1045,6 +1162,42 @@ func (x *Address) GetZipCode() int32 {
 	return 0
 }
 
+func (x *Address) SetStreetAddress(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Address", "StreetAddress", value)
+	if err != nil {
+		return err
+	}
+	x.StreetAddress = value
+	return nil
+}
+
+func (x *Address) SetCity(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Address", "City", value)
+	if err != nil {
+		return err
+	}
+	x.City = value
+	return nil
+}
+
+func (x *Address) SetState(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Address", "State", value)
+	if err != nil {
+		return err
+	}
+	x.State = value
+	return nil
+}
+
+func (x *Address) SetCountry(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Address", "Country", value)
+	if err != nil {
+		return err
+	}
+	x.Country = value
+	return nil
+}
+
 // Represents an amount of money with its currency type.
 type Money struct {
 	state         protoimpl.MessageState
@@ -1118,6 +1271,15 @@ func (x *Money) GetNanos() int32 {
 		return x.Nanos
 	}
 	return 0
+}
+
+func (x *Money) SetCurrencyCode(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Money", "CurrencyCode", value)
+	if err != nil {
+		return err
+	}
+	x.CurrencyCode = value
+	return nil
 }
 
 type GetSupportedCurrenciesResponse struct {
@@ -1232,6 +1394,15 @@ func (x *CurrencyConversionRequest) GetToCode() string {
 	return ""
 }
 
+func (x *CurrencyConversionRequest) SetToCode(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("CurrencyConversionRequest", "ToCode", value)
+	if err != nil {
+		return err
+	}
+	x.ToCode = value
+	return nil
+}
+
 type CreditCardInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1303,6 +1474,15 @@ func (x *CreditCardInfo) GetCreditCardExpirationMonth() int32 {
 		return x.CreditCardExpirationMonth
 	}
 	return 0
+}
+
+func (x *CreditCardInfo) SetCreditCardNumber(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("CreditCardInfo", "CreditCardNumber", value)
+	if err != nil {
+		return err
+	}
+	x.CreditCardNumber = value
+	return nil
 }
 
 type ChargeRequest struct {
@@ -1409,6 +1589,15 @@ func (x *ChargeResponse) GetTransactionId() string {
 		return privacy_go.PermissionedDecrypt("ChargeResponse", "TransactionId", x.TransactionId)
 	}
 	return ""
+}
+
+func (x *ChargeResponse) SetTransactionId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("ChargeResponse", "TransactionId", value)
+	if err != nil {
+		return err
+	}
+	x.TransactionId = value
+	return nil
 }
 
 type OrderItem struct {
@@ -1549,6 +1738,24 @@ func (x *OrderResult) GetItems() []*OrderItem {
 	return nil
 }
 
+func (x *OrderResult) SetOrderId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("OrderResult", "OrderId", value)
+	if err != nil {
+		return err
+	}
+	x.OrderId = value
+	return nil
+}
+
+func (x *OrderResult) SetShippingTrackingId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("OrderResult", "ShippingTrackingId", value)
+	if err != nil {
+		return err
+	}
+	x.ShippingTrackingId = value
+	return nil
+}
+
 type SendOrderConfirmationRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1603,6 +1810,15 @@ func (x *SendOrderConfirmationRequest) GetOrder() *OrderResult {
 	if x != nil {
 		return x.Order
 	}
+	return nil
+}
+
+func (x *SendOrderConfirmationRequest) SetEmail(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("SendOrderConfirmationRequest", "Email", value)
+	if err != nil {
+		return err
+	}
+	x.Email = value
 	return nil
 }
 
@@ -1684,6 +1900,33 @@ func (x *PlaceOrderRequest) GetCreditCard() *CreditCardInfo {
 	if x != nil {
 		return x.CreditCard
 	}
+	return nil
+}
+
+func (x *PlaceOrderRequest) SetUserId(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("PlaceOrderRequest", "UserId", value)
+	if err != nil {
+		return err
+	}
+	x.UserId = value
+	return nil
+}
+
+func (x *PlaceOrderRequest) SetUserCurrency(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("PlaceOrderRequest", "UserCurrency", value)
+	if err != nil {
+		return err
+	}
+	x.UserCurrency = value
+	return nil
+}
+
+func (x *PlaceOrderRequest) SetEmail(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("PlaceOrderRequest", "Email", value)
+	if err != nil {
+		return err
+	}
+	x.Email = value
 	return nil
 }
 
@@ -1896,6 +2139,24 @@ func (x *Ad) GetText() string {
 		return privacy_go.PermissionedDecrypt("Ad", "Text", x.Text)
 	}
 	return ""
+}
+
+func (x *Ad) SetRedirectUrl(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Ad", "RedirectUrl", value)
+	if err != nil {
+		return err
+	}
+	x.RedirectUrl = value
+	return nil
+}
+
+func (x *Ad) SetText(value string) error {
+	value, err := privacy_go.PermissionedEncrypt("Ad", "Text", value)
+	if err != nil {
+		return err
+	}
+	x.Text = value
+	return nil
 }
 
 var File_demo_proto protoreflect.FileDescriptor

@@ -27,6 +27,7 @@ RUN apk add --no-cache ca-certificates \
     busybox-extras net-tools bind-tools
 WORKDIR /frontend
 COPY --from=builder /go/bin/frontend /frontend/server
+COPY --from=builder /src/privacy_policy.json /src/privacy_policy.json
 COPY ./templates ./templates
 COPY ./static ./static
 EXPOSE 8080

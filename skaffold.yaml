@@ -20,28 +20,28 @@ build:
   # must provide a "default repo" using one of the methods described 
   # here:
   # https://skaffold.dev/docs/concepts/#image-repository-handling
-  # - image: jweissko/emailservice
-  #   context: src/emailservice
-  # - image: jweissko/productcatalogservice
-  #   context: src/productcatalogservice
-  # - image: jweissko/recommendationservice
-  #   context: src/recommendationservice
-  # - image: jweissko/shippingservice
-  #   context: src/shippingservice
-  # - image: jweissko/checkoutservice
-  #   context: src/checkoutservice
-  # - image: jweissko/paymentservice
-  #   context: src/paymentservice
-  # - image: jweissko/currencyservice
-  #   context: src/currencyservice
-  # - image: jweissko/cartservice
-  #   context: src/cartservice
-  - image: jweissko/frontend
+  - image: emailservice
+    context: src/emailservice
+  - image: productcatalogservice
+    context: src/productcatalogservice
+  - image: recommendationservice
+    context: src/recommendationservice
+  - image: shippingservice
+    context: src/shippingservice
+  - image: checkoutservice
+    context: src/checkoutservice
+  - image: paymentservice
+    context: src/paymentservice
+  - image: currencyservice
+    context: src/currencyservice
+  - image: cartservice
+    context: src/cartservice
+  - image: frontend
     context: src/frontend
-  - image: jweissko/adservice
+  - image: adservice
     context: src/adservice
-  local: 
-    push: true
+  #local: 
+  #  push: true
   tagPolicy:
     gitCommit: {}
 deploy:

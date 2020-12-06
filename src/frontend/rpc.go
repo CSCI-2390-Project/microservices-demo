@@ -35,7 +35,7 @@ func (fe *frontendServer) getCurrencies(ctx context.Context) ([]string, error) {
 		return nil, err
 	}
 	var out []string
-	for _, c := range currs.CurrencyCodes {
+	for _, c := range currs.GetCurrencyCodes() {
 		if _, ok := whitelistedCurrencies[c]; ok {
 			out = append(out, c)
 		}
@@ -109,6 +109,8 @@ func (fe *frontendServer) getRecommendations(ctx context.Context, userID string,
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to get recommended product info (#%s)", v)
 		}
+		// needed because getProduct returns `p` as encrypted, and we pass this directly to
+		// a json templates handler which cannot understand our encrypted logic.
 		privacy_go.PermissionedRecursiveDecrypt(p)
 		out[i] = p
 	}

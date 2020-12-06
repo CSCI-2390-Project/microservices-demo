@@ -157,6 +157,7 @@ func (fe *frontendServer) productHandler(w http.ResponseWriter, r *http.Request)
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get product recommendations"), http.StatusInternalServerError)
 		return
 	}
+	// needed because `product` is passed directly to the populated values here.
 	privacy_go.PermissionedRecursiveDecrypt(p)
 	product := struct {
 		Item  *pb.Product
