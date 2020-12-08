@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import json
 import pandas
 
-domain = "104.196.179.170/"
+domain = "35.237.101.62"
 address = f'http://{domain}/api/traces'
 
 operations = {
